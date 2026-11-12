@@ -1,0 +1,71 @@
+
+{% extends "base.html" %}
+
+{% block title %}Expense Prediction - AI Finance Manager{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">🔮 AI Expense Forecasting</h2>
+
+<p>
+    Predict your future monthly expenses using Machine Learning.
+</p>
+
+<div class="card">
+
+    <h3>🤖 Linear Regression Prediction</h3>
+
+    <p>
+        This system studies your previous monthly expenses
+        and estimates your next month's expenses.
+    </p>
+
+    <div style="margin-top:25px; text-align:center;">
+
+        <h3>Predicted Next Month Expense</h3>
+
+        {% if predicted_expense is not none %}
+
+            <h1 style="color:#2563eb; font-size:35px;">
+                ₹{{ "%.2f"|format(predicted_expense) }}
+            </h1>
+
+        {% else %}
+
+            <h2>Prediction Not Available</h2>
+
+        {% endif %}
+
+    </div>
+
+    <div class="alert" style="margin-top:20px;">
+        {{ message }}
+    </div>
+
+</div>
+
+<div class="card" style="margin-top:25px;">
+
+    <h3>How Does It Work?</h3>
+
+    <ol>
+        <li>The system collects your previous expense records.</li>
+        <li>It groups expenses month by month.</li>
+        <li>Linear Regression learns the spending pattern.</li>
+        <li>It estimates your next month's expenses.</li>
+    </ol>
+
+</div>
+
+<div class="card" style="margin-top:25px;">
+
+    <h3>💡 Money Saving Tip</h3>
+
+    <p>
+        Check your expense analysis regularly and try to reduce
+        unnecessary spending.
+    </p>
+
+</div>
+
+{% endblock %}

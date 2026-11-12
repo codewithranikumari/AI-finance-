@@ -1,0 +1,115 @@
+
+{% extends "base.html" %}
+
+{% block title %}Monthly Budget - AI Finance Manager{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">💰 Monthly Budget Management</h2>
+
+<p>Set your monthly budget and control your spending.</p>
+
+<!-- Set Monthly Budget -->
+<div class="form-box">
+
+    <h3>Set Your Monthly Budget</h3>
+
+    <form method="POST" action="{{ url_for('budget') }}">
+
+        <div class="form-group">
+            <label>Select Month</label>
+            <input
+                type="month"
+                name="month"
+                value="{{ selected_month }}"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label>Monthly Budget Amount (₹)</label>
+            <input
+                type="number"
+                name="amount"
+                placeholder="Enter your monthly budget"
+                min="0.01"
+                step="0.01"
+                value="{{ budget_amount if budget_amount else '' }}"
+                required
+            >
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            Save Budget
+        </button>
+
+    </form>
+
+</div>
+
+<!-- Budget Summary -->
+<div class="cards">
+
+    <div class="card">
+        <h3>Monthly Budget</h3>
+        <h2>₹{{ "%.2f"|format(budget_amount) }}</h2>
+    </div>
+
+    <div class="card expense">
+        <h3>Total Spent</h3>
+        <h2>₹{{ "%.2f"|format(spent) }}</h2>
+    </div>
+
+    <div class="card balance">
+        <h3>Remaining Budget</h3>
+        <h2>₹{{ "%.2f"|format(remaining) }}</h2>
+    </div>
+
+</div>
+
+<!-- Budget Progress -->
+<div class="budget-card">
+
+    <h3>📊 Budget Usage</h3>
+
+    <p>
+        You have used {{ "%.1f"|format(percentage) }}% of your monthly budget.
+    </p>
+
+    <div class="progress-bar">
+
+        <progress
+            class="progress-fill {% if percentage >= 100 %}danger{% endif %}"
+            value="{{ [percentage, 100]|min }}"
+            max="100">
+        </progress>
+
+    </div>
+
+    {% if budget_amount <= 0 %}
+
+        <p>Please set your monthly budget first.</p>
+
+    {% elif remaining < 0 %}
+
+        <p style="color:red;">
+            ⚠️ You have exceeded your monthly budget!
+        </p>
+
+    {% elif percentage >= 80 %}
+
+        <p style="color:#d97706;">
+            ⚠️ Warning: You are close to your budget limit.
+        </p>
+
+    {% else %}
+
+        <p style="color:green;">
+            ✅ Your spending is within your budget.
+        </p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

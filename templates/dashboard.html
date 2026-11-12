@@ -1,0 +1,141 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard - AI Finance Manager{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">💰 My Finance Dashboard</h2>
+
+<p>Welcome, {{ session.get('user_name') }}! Here's your financial summary.</p>
+
+<!-- Summary Cards -->
+<div class="cards">
+
+    <div class="card income">
+        <h3>Total Income</h3>
+        <h2>₹{{ "%.2f"|format(income) }}</h2>
+    </div>
+
+    <div class="card expense">
+        <h3>Total Expenses</h3>
+        <h2>₹{{ "%.2f"|format(expense) }}</h2>
+    </div>
+
+    <div class="card balance">
+        <h3>Available Balance</h3>
+        <h2>₹{{ "%.2f"|format(balance) }}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Total Transactions</h3>
+        <h2>{{ total }}</h2>
+    </div>
+
+</div>
+
+<!-- Quick Actions -->
+<h3 class="page-title">Quick Actions</h3>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>➕ Add Transaction</h3>
+        <p>Add your income or expenses.</p>
+        <a href="{{ url_for('transactions') }}" class="btn">
+            Manage Transactions
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>📊 Expense Analysis</h3>
+        <p>Understand where your money goes.</p>
+        <a href="{{ url_for('analysis') }}" class="btn">
+            View Analysis
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>🔮 Expense Prediction</h3>
+        <p>See your estimated future expenses.</p>
+        <a href="{{ url_for('prediction') }}" class="btn">
+            View Prediction
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>🎯 Monthly Budget</h3>
+        <p>Set and manage your monthly budget.</p>
+        <a href="{{ url_for('budget') }}" class="btn">
+            Manage Budget
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>💎 Savings Goals</h3>
+        <p>Track your savings targets.</p>
+        <a href="{{ url_for('savings') }}" class="btn">
+            View Savings
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>📄 Monthly Reports</h3>
+        <p>Check your monthly financial reports.</p>
+        <a href="{{ url_for('reports') }}" class="btn">
+            View Reports
+        </a>
+    </div>
+
+</div>
+
+<!-- Recent Transactions -->
+<h3 class="page-title">Recent Transactions</h3>
+
+<div class="table-box">
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for item in recent %}
+
+            <tr>
+                <td>{{ item['title'] }}</td>
+
+                <td>₹{{ "%.2f"|format(item['amount']) }}</td>
+
+                <td>{{ item['category'] }}</td>
+
+                <td>{{ item['type'] }}</td>
+
+                <td>{{ item['transaction_date'] }}</td>
+            </tr>
+
+            {% else %}
+
+            <tr>
+                <td colspan="5">
+                    No transactions added yet.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

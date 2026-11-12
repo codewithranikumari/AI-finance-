@@ -1,0 +1,101 @@
+
+{% extends "base.html" %}
+
+{% block title %}Monthly Reports - AI Finance Manager{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">📄 Monthly Financial Reports</h2>
+
+<p>View your month-wise income and expense details.</p>
+
+<!-- Report Summary -->
+<div class="cards">
+
+    <div class="card income">
+        <h3>Total Income</h3>
+        <h2>
+            ₹{{ "%.2f"|format(records|sum(attribute='income')) }}
+        </h2>
+    </div>
+
+    <div class="card expense">
+        <h3>Total Expenses</h3>
+        <h2>
+            ₹{{ "%.2f"|format(records|sum(attribute='expense')) }}
+        </h2>
+    </div>
+
+</div>
+
+<!-- Monthly Report Table -->
+<div class="table-box">
+
+    <h3>Month-wise Financial Report</h3>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Total Income</th>
+                <th>Total Expenses</th>
+                <th>Monthly Balance</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for item in records %}
+
+            <tr>
+
+                <td>{{ item['month'] }}</td>
+
+                <td>
+                    ₹{{ "%.2f"|format(item['income']) }}
+                </td>
+
+                <td>
+                    ₹{{ "%.2f"|format(item['expense']) }}
+                </td>
+
+                <td>
+                    ₹{{ "%.2f"|format(item['income'] - item['expense']) }}
+                </td>
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+                <td colspan="4">
+                    No monthly reports available yet.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- Export Report -->
+<div class="card">
+
+    <h3>📊 Export Your Financial Data</h3>
+
+    <p>
+        Download all your transactions in Excel format
+        for future reference.
+    </p>
+
+    <a href="{{ url_for('export_excel') }}" class="btn btn-success">
+        Download Excel Report
+    </a>
+
+</div>
+
+{% endblock %}

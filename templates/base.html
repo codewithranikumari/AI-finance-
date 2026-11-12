@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}AI Finance Manager{% endblock %}</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+
+            <a href="{{ url_for('home') }}" class="logo">
+                💰 AI Finance Manager
+            </a>
+
+            {% if session.get('user_id') %}
+
+            <div class="nav-links">
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+
+                <a href="{{ url_for('transactions') }}">Transactions</a>
+
+                <a href="{{ url_for('analysis') }}">Analysis</a>
+
+                <a href="{{ url_for('prediction') }}">Prediction</a>
+
+                <a href="{{ url_for('budget') }}">Monthly Budget</a>
+
+                <a href="{{ url_for('savings') }}">Savings Goals</a>
+
+                <a href="{{ url_for('reports') }}">Reports</a>
+
+                <a href="{{ url_for('export_excel') }}">Export Excel</a>
+
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+
+            {% else %}
+
+            <div class="nav-links">
+                <a href="{{ url_for('login') }}">Login</a>
+
+                <a href="{{ url_for('register') }}">Register</a>
+            </div>
+
+            {% endif %}
+
+        </div>
+    </nav>
+
+
+    <main class="container">
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+
+                {% for message in messages %}
+                    <div class="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <footer>
+        <p>© 2026 AI Finance & Expense Manager</p>
+        <p>Manage Your Money Smartly 💰</p>
+    </footer>
+
+</body>
+</html>
+

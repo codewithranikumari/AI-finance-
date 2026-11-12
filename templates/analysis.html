@@ -1,0 +1,111 @@
+
+{% extends "base.html" %}
+
+{% block title %}Expense Analysis - AI Finance Manager{% endblock %}
+
+{% block content %}
+
+<h2 class="page-title">📊 Expense Analysis</h2>
+
+<p>Understand how you spend your money.</p>
+
+<!-- Total Expense -->
+<div class="cards">
+
+    <div class="card expense">
+        <h3>Total Expenses</h3>
+        <h2>₹{{ "%.2f"|format(total_expense) }}</h2>
+    </div>
+
+</div>
+
+<!-- Expense Chart -->
+<div class="chart-box">
+
+    <h3>Category-wise Expense Chart</h3>
+
+    {% if categories %}
+
+        <img
+            src="{{ url_for('expense_chart') }}"
+            alt="Expense Chart"
+            style="width:100%; max-width:600px; display:block; margin:auto;"
+        >
+
+    {% else %}
+
+        <p>No expense data available. Add some expense transactions first.</p>
+
+    {% endif %}
+
+</div>
+
+<!-- Category Table -->
+<div class="table-box">
+
+    <h3>Expense Details by Category</h3>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Total Amount</th>
+                <th>Percentage</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for i in range(categories|length) %}
+
+            <tr>
+                <td>{{ categories[i] }}</td>
+
+                <td>₹{{ "%.2f"|format(amounts[i]) }}</td>
+
+                <td>
+                    {% if total_expense > 0 %}
+                        {{ "%.2f"|format((amounts[i] / total_expense) * 100) }}%
+                    {% else %}
+                        0%
+                    {% endif %}
+                </td>
+            </tr>
+
+            {% else %}
+
+            <tr>
+                <td colspan="3">No expenses recorded yet.</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- Highest Expense Category -->
+{% if categories %}
+
+<div class="card">
+
+    <h3>💡 Spending Insight</h3>
+
+    <p>
+        Your highest expense category is
+        <strong>{{ categories[amounts.index(amounts|max)] }}</strong>.
+    </p>
+
+    <p>
+        Amount spent:
+        <strong>₹{{ "%.2f"|format(amounts|max) }}</strong>
+    </p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
